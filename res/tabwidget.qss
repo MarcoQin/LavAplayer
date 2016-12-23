@@ -1,0 +1,35 @@
+QTabWidget::tab-bar {
+left: 0px; 
+}
+
+QTabBar::tab {
+	
+
+background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(87, 87,87, 255), stop:1 rgba(8,8, 8, 255));
+    border: 1px solid rgba(37, 37, 37, 255);
+    border-bottom-color: rgba(37, 37, 37, 255); 
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    min-width: 8ex;
+    max-width: 25ex;
+	min-height: 15px;
+	max-height:15px;
+    padding: 2px;
+    color: rgba(35,221,40, 100%);
+}
+
+QTabBar::tab:selected, QTabBar::tab:hover {
+background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(8, 8,8, 255), stop:1 rgba(87,87, 87, 255));
+}
+
+QTabBar::tab:first:selected {
+    margin-left: 0; /* the first selected tab has nothing to overlap with on the left */
+}
+
+QTabBar::tab:last:selected {
+    margin-right: 0; /* the last selected tab has nothing to overlap with on the right */
+}
+
+QTabBar::tab:only-one {
+    margin: 0; /* if there is only one tab, we don't want overlapping margins */
+}

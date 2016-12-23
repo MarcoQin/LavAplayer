@@ -1,0 +1,63 @@
+<RCC>
+    <qresource prefix="/pic">
+        <file>images/default.png</file>
+        <file>images/mid_ov4.png</file>
+        <file>images/mid_bg.png</file>
+        <file>images/default_mini.png</file>
+        <file>images/foologo.png</file>
+        <file>images/bg.png</file>
+        <file>images/bg_spectrum.png</file>
+        <file>images/brushed.png</file>
+        <file>images/controls/bt_mood0.png</file>
+        <file>images/controls/bt_mood0on.png</file>
+        <file>images/controls/bt_mood1.png</file>
+        <file>images/controls/bt_mood1on.png</file>
+        <file>images/controls/bt_next0.png</file>
+        <file>images/controls/bt_next1.png</file>
+        <file>images/controls/bt_pause0.png</file>
+        <file>images/controls/bt_pause1.png</file>
+        <file>images/controls/bt_play0.png</file>
+        <file>images/controls/bt_play1.png</file>
+        <file>images/controls/bt_prev0.png</file>
+        <file>images/controls/bt_prev1.png</file>
+        <file>images/controls/bt_skip0.png</file>
+        <file>images/controls/bt_skip0on.png</file>
+        <file>images/controls/bt_skip1.png</file>
+        <file>images/controls/bt_skip1on.png</file>
+        <file>images/controls/note0.png</file>
+        <file>images/controls/note1.png</file>
+        <file>images/controls/open0.png</file>
+        <file>images/controls/open1.png</file>
+        <file>images/controls/po_default0.png</file>
+        <file>images/controls/po_default1.png</file>
+        <file>images/controls/po_random0.png</file>
+        <file>images/controls/po_random1.png</file>
+        <file>images/controls/po_repeat_pl0.png</file>
+        <file>images/controls/po_repeat_pl1.png</file>
+        <file>images/controls/po_repeat0.png</file>
+        <file>images/controls/po_repeat1.png</file>
+        <file>images/controls/po_shuffle_al0.png</file>
+        <file>images/controls/po_shuffle_al1.png</file>
+        <file>images/controls/po_shuffle_fo0.png</file>
+        <file>images/controls/po_shuffle_fo1.png</file>
+        <file>images/controls/po_shuffle0.png</file>
+        <file>images/controls/po_shuffle1.png</file>
+        <file>images/controls/stop0.png</file>
+        <file>images/controls/stop1.png</file>
+        <file>images/controls/stopafter0.png</file>
+        <file>images/controls/stopafter1.png</file>
+        <file>images/controls/stopafter2.png</file>
+        <file>images/controls/stopafter3.png</file>
+        <file>images/__knob2.png</file>
+        <file>images/_knob.png</file>
+        <file>images/voldot4g.png</file>
+        <file>images/voldot4s.png</file>
+    </qresource>
+    <qresource prefix="/fonts">
+        <file>fonts/digital-7 (mono).ttf</file>
+    </qresource>
+    <qresource prefix="/qss">
+        <file>res/tabwidget.qss</file>
+        <file>res/tablewidget.qss</file>
+    </qresource>
+</RCC>
