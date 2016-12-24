@@ -572,96 +572,6 @@ background-color: qlineargradient(spread:pad, x1:0.437811, y1:0, x2:0.483299, y2
      <string/>
     </property>
    </widget>
-   <widget class="QTabWidget" name="tabWidget">
-    <property name="geometry">
-     <rect>
-      <x>19</x>
-      <y>229</y>
-      <width>881</width>
-      <height>281</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">QTabWidget::tab-bar {
-left: 0px; 
-}
-
-QTabBar::tab {
-	
-
-background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(87, 87,87, 255), stop:1 rgba(8,8, 8, 255));
-    border: 1px solid rgba(37, 37, 37, 255);
-    border-bottom-color: rgba(37, 37, 37, 255); 
-    border-top-left-radius: 4px;
-    border-top-right-radius: 4px;
-    min-width: 8ex;
-    max-width: 25ex;
-	min-height: 15px;
-	max-height:15px;
-    padding: 2px;
-    color: rgba(35,221,40, 100%);
-}
-
-QTabBar::tab:selected, QTabBar::tab:hover {
-background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(8, 8,8, 255), stop:1 rgba(87,87, 87, 255));
-}
-
-QTabBar::tab:first:selected {
-    margin-left: 0; /* the first selected tab has nothing to overlap with on the left */
-}
-
-QTabBar::tab:last:selected {
-    margin-right: 0; /* the last selected tab has nothing to overlap with on the right */
-}
-
-QTabBar::tab:only-one {
-    margin: 0; /* if there is only one tab, we don't want overlapping margins */
-}</string>
-    </property>
-    <property name="tabPosition">
-     <enum>QTabWidget::South</enum>
-    </property>
-    <property name="tabShape">
-     <enum>QTabWidget::Triangular</enum>
-    </property>
-    <property name="currentIndex">
-     <number>1</number>
-    </property>
-    <property name="usesScrollButtons">
-     <bool>false</bool>
-    </property>
-    <property name="tabsClosable">
-     <bool>true</bool>
-    </property>
-    <widget class="QWidget" name="tab">
-     <attribute name="title">
-      <string>新的播放列表</string>
-     </attribute>
-     <widget class="QTableView" name="tableView">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>881</width>
-        <height>252</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color: rgb(0, 0, 0);</string>
-      </property>
-     </widget>
-    </widget>
-    <widget class="QWidget" name="tab_2">
-     <attribute name="title">
-      <string>ACG</string>
-     </attribute>
-    </widget>
-    <widget class="QWidget" name="tab_3">
-     <attribute name="title">
-      <string>页</string>
-     </attribute>
-    </widget>
-   </widget>
    <widget class="QLabel" name="play_list_bg_z1">
     <property name="geometry">
      <rect>
@@ -1047,7 +957,6 @@ background: rgb(153,153,153);
    <zorder>skipBtn</zorder>
    <zorder>play_list_bg</zorder>
    <zorder>play_list_bg_z1</zorder>
-   <zorder>tabWidget</zorder>
    <zorder>spectrum_bg_down</zorder>
    <zorder>timePassed_back</zorder>
    <zorder>timePassed</zorder>

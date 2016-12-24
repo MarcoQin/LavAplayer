@@ -5,7 +5,7 @@
 #include <QTextStream>
 #include <QDebug>
 #include <QString>
-#include "dboperate.h"
+//#include "dboperate.h"
 
 #include "tagmanager.h"
 
@@ -37,15 +37,18 @@ PlayListView::PlayListView(QWidget *parent) :
         f.close();
     }
 
+    connect(this, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(rowDoubleClicked(QModelIndex)));
+
 }
 
 void PlayListView::setUpModel(const int listIndex)
 {
-    QString listName = getListName(listIndex);
-//    QString listName = "list_0";
+//    QString listName = getListName(listIndex);
+    QString listName = "list_0";
     model = new QSqlRelationalTableModel(this);
     model->setEditStrategy(QSqlTableModel::OnManualSubmit);
     model->setTable(listName);
+
 
     model->setHeaderData(model->fieldIndex("title"), Qt::Horizontal, tr("Title"));
 
@@ -56,16 +59,19 @@ void PlayListView::setUpModel(const int listIndex)
     }
 
     this->setModel(model);
+    this->setColumnHidden(model->fieldIndex("path"), true);
 
 }
 
-void PlayListView::insertSongs(QList<QUrl> urls)
+void PlayListView::refreshModel()
 {
-    foreach (const QUrl &url, urls) {
-        QString fileName = url.toLocalFile();
-        qDebug() << "Dropped file:" << fileName;
-        TagInfo info = TagManager::instance()->getTagInfo(fileName.toStdString().c_str());
-        addSong(0, info.path, info.title, info.artist, info.album, info.bitrate, info.samplerate, info.length, info.genre, info.track, info.year);
-    }
     model->select();
+}
+
+void PlayListView::rowDoubleClicked(const QModelIndex &index)
+{
+    QModelIndex i = model->index(index.row(), model->fieldIndex("path"), QModelIndex());
+    qDebug() << i;
+    QString path = model->data(i, 0).toString();
+    qDebug() << path;
 }

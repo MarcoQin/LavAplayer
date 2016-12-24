@@ -18,7 +18,7 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 signals:
-    void OnFilesDrop(QList<QUrl>);
+    void onAddSong();
 protected:
     void dragEnterEvent(QDragEnterEvent *e);
     void dropEvent(QDropEvent *e);

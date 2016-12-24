@@ -13,7 +13,8 @@ public:
     PlayListView(QWidget *parent);
     void setUpModel(const int listIndex);
 public slots:
-    void insertSongs(QList<QUrl> urls);
+    void refreshModel();
+    void rowDoubleClicked(const QModelIndex &index);
 private:
     QSqlRelationalTableModel *model;
 };

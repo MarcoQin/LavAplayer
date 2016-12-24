@@ -25,7 +25,7 @@
 #include "playlistview.h"
 
 #include "initdb.h"
-//#include "dboperate.h"
+#include "dboperate.h"
 
 #include <QtSql>
 
@@ -64,7 +64,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     PlayListTabWidget *tabWidget = new PlayListTabWidget(this);
     PlayListView * view = tabWidget->createTab();
-    connect(this, SIGNAL(OnFilesDrop(QList<QUrl>)), view, SLOT(insertSongs(QList<QUrl>)));
+    connect(this, SIGNAL(onAddSong()), view, SLOT(refreshModel()));
 //    tabWidget->createTab(false);
 
     setAcceptDrops(true);
@@ -89,8 +89,8 @@ void MainWindow::dropEvent(QDropEvent *e)
     foreach (const QUrl &url, e->mimeData()->urls()) {
         QString fileName = url.toLocalFile();
         qDebug() << "Dropped file:" << fileName;
-//        TagInfo info = TagManager::instance()->getTagInfo(fileName.toStdString().c_str());
-//        addSong(0, info.path, info.title, info.artist, info.album, info.bitrate, info.samplerate, info.length, info.genre, info.track, info.year);
+        TagInfo info = TagManager::instance()->getTagInfo(fileName.toStdString().c_str());
+        addSong(0, info.path, info.title, info.artist, info.album, info.bitrate, info.samplerate, info.length, info.genre, info.track, info.year);
     }
-    emit OnFilesDrop(e->mimeData()->urls());
+    emit onAddSong();
 }
