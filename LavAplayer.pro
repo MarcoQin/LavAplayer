@@ -13,13 +13,18 @@ CONFIG += c++11
 TARGET = LavAplayer
 TEMPLATE = app
 
+QMAKE_LFLAGS += -F/Library/Frameworks/
+
 INCLUDEPATH += \
-    /usr/local/include
+    /usr/local/include \
+    /Library/Frameworks/SDL2.framework/Headers
 
 LIBS += \
     -lz \
+    -lavformat -lavcodec -lswscale -lavutil -lswresample\
+    -framework sdl2 \
     -L/usr/local/lib \
-    -ltag
+    -ltag \
 
 
 SOURCES += main.cpp\
@@ -27,7 +32,8 @@ SOURCES += main.cpp\
         tagmanager.cpp \
         customdial.cpp \
         playlistview.cpp \
-        playlisttabwidget.cpp
+        playlisttabwidget.cpp \
+        LAVA/lava.cpp
 
 HEADERS  += mainwindow.h \
     tagmanager.h \
@@ -35,7 +41,8 @@ HEADERS  += mainwindow.h \
     playlistview.h \
     playlisttabwidget.h \
     initdb.h \
-    dboperate.h
+    dboperate.h \
+    LAVA/lava.h
 
 FORMS    += mainwindow.ui
 
