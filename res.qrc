@@ -60,4 +60,12 @@
         <file>res/tabwidget.qss</file>
         <file>res/tablewidget.qss</file>
     </qresource>
+    <qresource prefix="/Picture">
+        <file>res/close-btn.png</file>
+        <file>res/close-btn-1.png</file>
+        <file>res/max-btn.png</file>
+        <file>res/max-btn-1.png</file>
+        <file>res/min-btn.png</file>
+        <file>res/min-btn-1.png</file>
+    </qresource>
 </RCC>

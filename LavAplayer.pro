@@ -33,7 +33,9 @@ SOURCES += main.cpp\
         customdial.cpp \
         playlistview.cpp \
         playlisttabwidget.cpp \
-        LAVA/lava.cpp
+        LAVA/lava.cpp \
+    floatwidget.cpp \
+    titlebar.cpp
 
 HEADERS  += mainwindow.h \
     tagmanager.h \
@@ -42,7 +44,9 @@ HEADERS  += mainwindow.h \
     playlisttabwidget.h \
     initdb.h \
     dboperate.h \
-    LAVA/lava.h
+    LAVA/lava.h \
+    floatwidget.h \
+    titlebar.h
 
 FORMS    += mainwindow.ui
 

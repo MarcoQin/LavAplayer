@@ -7,6 +7,8 @@
 #include <QUrl>
 #include <QtSql>
 
+#include "titlebar.h"
+
 namespace Ui {
 class MainWindow;
 }
@@ -22,12 +24,15 @@ signals:
     void onAddSong();
 public slots:
     void onDoubleClickSong(const QSqlRecord &rowInfo);
+    void resizeEvent(QResizeEvent *event);
+    void mouseMoveEvent(QMouseEvent *event);
 protected:
     void dragEnterEvent(QDragEnterEvent *e);
     void dropEvent(QDropEvent *e);
 
 private:
     Ui::MainWindow *ui;
+    UI::TitleBar *titleBar;
 };
 
 #endif // MAINWINDOW_H

@@ -35,6 +35,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
+    setWindowFlags(Qt::FramelessWindowHint);
     // initialize the database
     QSqlError err = initDb();
     if (err.type() != QSqlError::NoError) {
@@ -72,7 +73,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     setAcceptDrops(true);
 
-
+    titleBar = new UI::TitleBar(this);
+    setFocus(Qt::MouseFocusReason);
 }
 
 MainWindow::~MainWindow()
@@ -108,4 +110,21 @@ void MainWindow::onDoubleClickSong(const QSqlRecord &rowInfo)
     ui->album->setText(rowInfo.value("album").toString());
     ui->artist->setText(rowInfo.value("artist").toString());
     ui->cover->setPixmap(TagManager::instance()->getCover(path.toStdString().c_str()));
+}
+
+void MainWindow::mouseMoveEvent(QMouseEvent *event)
+{
+    if (!titleBar->isVisible()) {
+        titleBar->show();
+        titleBar->resetPosition(this);
+        titleBar->resetSize(this);
+    }
+    event->accept();
+}
+
+void MainWindow::resizeEvent(QResizeEvent *event)
+{
+    titleBar->resetPosition(this);
+    titleBar->resetSize(this);
+    event->accept();
 }
