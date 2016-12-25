@@ -9,8 +9,6 @@
 
 #include "tagmanager.h"
 
-#include "LAVA/lava.h"
-
 PlayListView::PlayListView(QWidget *parent) :
     QTableView(parent)
 {
@@ -72,9 +70,6 @@ void PlayListView::refreshModel()
 
 void PlayListView::rowDoubleClicked(const QModelIndex &index)
 {
-    QModelIndex i = model->index(index.row(), model->fieldIndex("path"), QModelIndex());
-    qDebug() << i;
-    QString path = model->data(i, 0).toString();
-    qDebug() << path;
-    LAVA::Core::instance()->load_file(path.toStdString().c_str());
+    const QSqlRecord rowInfo = model->record(index.row());
+    emit onSongDoubleClicked(rowInfo);
 }

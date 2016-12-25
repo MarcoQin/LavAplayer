@@ -5,6 +5,7 @@
 #include <QList>
 #include <QtWidgets>
 #include <QUrl>
+#include <QtSql>
 
 namespace Ui {
 class MainWindow;
@@ -19,6 +20,8 @@ public:
     ~MainWindow();
 signals:
     void onAddSong();
+public slots:
+    void onDoubleClickSong(const QSqlRecord &rowInfo);
 protected:
     void dragEnterEvent(QDragEnterEvent *e);
     void dropEvent(QDropEvent *e);

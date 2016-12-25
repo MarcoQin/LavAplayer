@@ -12,6 +12,8 @@ class PlayListView : public QTableView
 public:
     PlayListView(QWidget *parent);
     void setUpModel(const int listIndex);
+signals:
+    void onSongDoubleClicked(const QSqlRecord &rowInfo);
 public slots:
     void refreshModel();
     void rowDoubleClicked(const QModelIndex &index);

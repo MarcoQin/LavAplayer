@@ -29,6 +29,8 @@
 
 #include <QtSql>
 
+#include "LAVA/lava.h"
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -65,6 +67,7 @@ MainWindow::MainWindow(QWidget *parent) :
     PlayListTabWidget *tabWidget = new PlayListTabWidget(this);
     PlayListView * view = tabWidget->createTab();
     connect(this, SIGNAL(onAddSong()), view, SLOT(refreshModel()));
+    connect(view, SIGNAL(onSongDoubleClicked(QSqlRecord)), this, SLOT(onDoubleClickSong(QSqlRecord)));
 //    tabWidget->createTab(false);
 
     setAcceptDrops(true);
@@ -93,4 +96,16 @@ void MainWindow::dropEvent(QDropEvent *e)
         addSong(0, info.path, info.title, info.artist, info.album, info.bitrate, info.samplerate, info.length, info.genre, info.track, info.year);
     }
     emit onAddSong();
+}
+
+void MainWindow::onDoubleClickSong(const QSqlRecord &rowInfo)
+{
+    QString path = rowInfo.value("path").toString();
+    qDebug() << path;
+    LAVA::Core::instance()->load_file(path.toStdString().c_str());
+    const QString title = rowInfo.value("title").toString();
+    ui->title->setText(title);
+    ui->album->setText(rowInfo.value("album").toString());
+    ui->artist->setText(rowInfo.value("artist").toString());
+    ui->cover->setPixmap(TagManager::instance()->getCover(path.toStdString().c_str()));
 }
