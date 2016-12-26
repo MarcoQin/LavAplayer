@@ -8,7 +8,8 @@ FloatWidget::FloatWidget(QWidget *parent) :
     QWidget(parent)
 {
     setMouseTracking(true);
-    setWindowFlags(Qt::Tool |
+    setWindowFlags(
+                   Qt::Tool |
                    Qt::FramelessWindowHint |
                    Qt::WindowStaysOnTopHint |
                    Qt::X11BypassWindowManagerHint |

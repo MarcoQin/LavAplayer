@@ -29,6 +29,7 @@ TitleBar::TitleBar(QWidget *parent) :
     connect(closeBtn, SIGNAL(clicked(bool)), this, SIGNAL(closeClicked()));
     connect(minBtn, SIGNAL(clicked(bool)), this, SIGNAL(minClicked()));
     connect(maxBtn, SIGNAL(clicked(bool)), this, SIGNAL(maxClicked()));
+    resetSize(parent);
 }
 
 

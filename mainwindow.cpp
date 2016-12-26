@@ -31,11 +31,42 @@
 
 #include "LAVA/lava.h"
 
+
+class CBK : public LAVA::AudioCallbackInject
+{
+public:
+    CBK(MainWindow * mainWindow = nullptr);
+    virtual void update(uint8_t *stream, int len);
+private:
+    MainWindow *inst = nullptr;
+};
+
+CBK::CBK(MainWindow *mainWindow)
+{
+    inst = mainWindow;
+}
+
+void CBK::update(uint8_t *stream, int len)
+{
+    qDebug() << stream;
+    qDebug() << len;
+    if (inst) {
+        inst->cbk(stream, len);
+    }
+}
+
+void MainWindow::cbk(uint8_t *stream, int len)
+{
+    qDebug() << "haha";
+    qDebug() << stream[0];
+}
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     setWindowFlags(Qt::FramelessWindowHint);
+    setMouseTracking(true);
     // initialize the database
     QSqlError err = initDb();
     if (err.type() != QSqlError::NoError) {
@@ -43,6 +74,7 @@ MainWindow::MainWindow(QWidget *parent) :
                     "Error initializing database: " + err.text());
         return;
     }
+
 
     ui->setupUi(this);
     ui->cover->setScaledContents(true);
@@ -69,12 +101,21 @@ MainWindow::MainWindow(QWidget *parent) :
     PlayListView * view = tabWidget->createTab();
     connect(this, SIGNAL(onAddSong()), view, SLOT(refreshModel()));
     connect(view, SIGNAL(onSongDoubleClicked(QSqlRecord)), this, SLOT(onDoubleClickSong(QSqlRecord)));
-//    tabWidget->createTab(false);
 
     setAcceptDrops(true);
 
     titleBar = new UI::TitleBar(this);
-    setFocus(Qt::MouseFocusReason);
+    connectSignals();
+
+    CBK *cbk = new CBK(this);
+    LAVA::Core::instance()->setAudioCallbackInject(static_cast<LAVA::AudioCallbackInject*>(cbk));
+}
+
+
+void MainWindow::connectSignals()
+{
+    connect(titleBar, SIGNAL(closeClicked()), this, SLOT(close()));
+    connect(titleBar, SIGNAL(minClicked()), this, SLOT(setMinimumWindow()));
 }
 
 MainWindow::~MainWindow()
@@ -110,21 +151,37 @@ void MainWindow::onDoubleClickSong(const QSqlRecord &rowInfo)
     ui->album->setText(rowInfo.value("album").toString());
     ui->artist->setText(rowInfo.value("artist").toString());
     ui->cover->setPixmap(TagManager::instance()->getCover(path.toStdString().c_str()));
+    ui->bit_rate->setText(QString::number(rowInfo.value("bitrate").toInt()) + " Kb/s");
+    ui->sample_rate->setText(QString::number(rowInfo.value("samplerate").toInt()) + " Hz");
+    std::string fmt = path.toStdString();
+    std::size_t found = fmt.rfind(".");
+    if (found!=std::string::npos)  {
+        std::string s = fmt.substr(found + 1);
+        std::transform(s.begin(), s.end(), s.begin(), ::toupper);
+        ui->format->setText(s.c_str());
+        qDebug() << s.c_str();
+    }
 }
 
-void MainWindow::mouseMoveEvent(QMouseEvent *event)
+void MainWindow::setMinimumWindow()
 {
-    if (!titleBar->isVisible()) {
-        titleBar->show();
-        titleBar->resetPosition(this);
-        titleBar->resetSize(this);
-    }
+    titleBar->hide();
+    setWindowState(Qt::WindowMinimized);
+}
+
+void MainWindow::showEvent(QShowEvent *event)
+{
+    QTimer::singleShot(300, this, SLOT(resetTitleBar()));
     event->accept();
 }
 
-void MainWindow::resizeEvent(QResizeEvent *event)
+void MainWindow::resetTitleBar()
 {
     titleBar->resetPosition(this);
-    titleBar->resetSize(this);
-    event->accept();
+    titleBar->show();
+}
+
+void MainWindow::moveEvent(QMoveEvent *event)
+{
+    titleBar->resetPosition(this);
 }
