@@ -6,6 +6,7 @@
 #include <QtWidgets>
 #include <QUrl>
 #include <QtSql>
+#include <fftw3.h>
 
 #include "titlebar.h"
 
@@ -38,6 +39,8 @@ private:
     void connectSignals();
     Ui::MainWindow *ui;
     UI::TitleBar *titleBar;
+    fftw_plan m_fftw_plan_left;
+    fftw_complex *m_fftw_output_left;
 };
 
 #endif // MAINWINDOW_H

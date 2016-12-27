@@ -17,7 +17,6 @@ QMAKE_LFLAGS += -F/Library/Frameworks/
 
 INCLUDEPATH += \
     /usr/local/include \
-    /Library/Frameworks/SDL2.framework/Headers
 
 LIBS += \
     -lz \
@@ -25,6 +24,7 @@ LIBS += \
     -framework sdl2 \
     -L/usr/local/lib \
     -ltag \
+    -lfftw3 \
 
 
 SOURCES += main.cpp\

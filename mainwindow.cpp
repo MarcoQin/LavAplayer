@@ -50,6 +50,7 @@ void CBK::update(uint8_t *stream, int len)
 {
     qDebug() << stream;
     qDebug() << len;
+    qDebug() << "update";
     if (inst) {
         inst->cbk(stream, len);
     }
@@ -57,14 +58,31 @@ void CBK::update(uint8_t *stream, int len)
 
 void MainWindow::cbk(uint8_t *stream, int len)
 {
-    qDebug() << "haha";
-    qDebug() << stream[0];
+//    qDebug() << "haha";
+////    qDebug() << stream[0];
+//    double buf[2][len/2 + 1];
+//    int16_t *s = (int16_t*)stream;
+//    for (int i = 0; i < len / 2; ++i)
+//    {
+//        for (int j = 0; j < 2; ++j)
+//        {
+//            buf[j][i] = (int16_t)*s++ * (1.0f / (1 << 15));
+//        }
+//    }
+//    qDebug() << buf[0][10];
+//    qDebug() << "end";
+//    double * left = buf[0];
+//    m_fftw_plan_left = fftw_plan_dft_r2c_1d(len, left, m_fftw_output_left, FFTW_ESTIMATE);
+//    fftw_execute(m_fftw_plan_left);
+//    qDebug() << m_fftw_output_left;
 }
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
+    size_t results = (static_cast<size_t>(8192) / 2) + 1;
+    m_fftw_output_left = static_cast<fftw_complex*> (fftw_malloc(sizeof(fftw_complex) * results));
     setWindowFlags(Qt::FramelessWindowHint);
     setMouseTracking(true);
     // initialize the database
