@@ -9,6 +9,10 @@
 #include <fftw3.h>
 
 #include "titlebar.h"
+#include "spectrumanalyser.h"
+#include "spectrograph.h"
+#include "spectrumlineleft.h"
+#include "spectrumlineright.h"
 
 
 namespace Ui {
@@ -22,7 +26,7 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
-    void cbk(uint8_t *stream, int len);
+    void cbk(pcm_stereo_sample *input_buffer);
 signals:
     void onAddSong();
 public slots:
@@ -41,6 +45,10 @@ private:
     UI::TitleBar *titleBar;
     fftw_plan m_fftw_plan_left;
     fftw_complex *m_fftw_output_left;
+    SpectrumAnalyser *analyser;
+    Spectrograph *spectrumGraph;
+    SpectrumLineLeft *spectrumLineLeft;
+    SpectrumLineRight *spectrumLineRight;
 };
 
 #endif // MAINWINDOW_H

@@ -31,6 +31,9 @@
 
 #include "LAVA/lava.h"
 
+#include "spectrograph.h"
+#include "spectrumanalyser.h"
+
 
 class CBK : public LAVA::AudioCallbackInject
 {
@@ -39,27 +42,32 @@ public:
     virtual void update(uint8_t *stream, int len);
 private:
     MainWindow *inst = nullptr;
+    pcm_stereo_sample *buf;
 };
 
 CBK::CBK(MainWindow *mainWindow)
 {
     inst = mainWindow;
+    buf = static_cast<pcm_stereo_sample *>(calloc(sample_buffer_size, sizeof(pcm_stereo_sample)));
 }
 
 void CBK::update(uint8_t *stream, int len)
 {
-    qDebug() << stream;
-    qDebug() << len;
-    qDebug() << "update";
+    memset(buf, 0, sample_buffer_size);
+    memcpy(buf, (int16_t *)stream,  len);
+//    qDebug() << stream;
+//    qDebug() << len;
+//    qDebug() << "update";
     if (inst) {
-        inst->cbk(stream, len);
+        inst->cbk(buf);
     }
 }
 
-void MainWindow::cbk(uint8_t *stream, int len)
+void MainWindow::cbk(pcm_stereo_sample *input_buffer)
 {
+    analyser->execute_stereo(input_buffer);
 //    qDebug() << "haha";
-////    qDebug() << stream[0];
+//    qDebug() << stream[0];
 //    double buf[2][len/2 + 1];
 //    int16_t *s = (int16_t*)stream;
 //    for (int i = 0; i < len / 2; ++i)
@@ -81,6 +89,8 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
+    analyser = new SpectrumAnalyser(this);
+
     size_t results = (static_cast<size_t>(8192) / 2) + 1;
     m_fftw_output_left = static_cast<fftw_complex*> (fftw_malloc(sizeof(fftw_complex) * results));
     setWindowFlags(Qt::FramelessWindowHint);
@@ -97,6 +107,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     ui->cover->setScaledContents(true);
 
+    spectrumGraph = new Spectrograph(this);
+    spectrumLineLeft = new SpectrumLineLeft(this);
+    spectrumLineRight = new SpectrumLineRight(this);
 
     QPixmap cover = TagManager::instance()->getCover("/Users/marcoqin/marco/1.mp3");
     ui->cover->setPixmap(cover);
@@ -127,6 +140,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     CBK *cbk = new CBK(this);
     LAVA::Core::instance()->setAudioCallbackInject(static_cast<LAVA::AudioCallbackInject*>(cbk));
+
 }
 
 
@@ -134,6 +148,10 @@ void MainWindow::connectSignals()
 {
     connect(titleBar, SIGNAL(closeClicked()), this, SLOT(close()));
     connect(titleBar, SIGNAL(minClicked()), this, SLOT(setMinimumWindow()));
+
+    connect(analyser, SIGNAL(spectrumAnalysed(fftw_complex*,fftw_complex*,int)), spectrumGraph, SLOT(spectrumChanged(fftw_complex*,fftw_complex*,int)));
+    connect(spectrumGraph, SIGNAL(barsGeneratedLeft(std::vector<double>&)), spectrumLineLeft, SLOT(onBarGenerated(std::vector<double>&)));
+    connect(spectrumGraph, SIGNAL(barsGeneratedRight(std::vector<double>&)), spectrumLineRight, SLOT(onBarGenerated(std::vector<double>&)));
 }
 
 MainWindow::~MainWindow()

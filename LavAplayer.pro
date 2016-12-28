@@ -5,6 +5,7 @@
 #-------------------------------------------------
 
 QT       += core gui\
+            widgets\
             sql
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
@@ -35,7 +36,11 @@ SOURCES += main.cpp\
         playlisttabwidget.cpp \
         LAVA/lava.cpp \
     floatwidget.cpp \
-    titlebar.cpp
+    titlebar.cpp \
+    spectrograph.cpp \
+    spectrumanalyser.cpp \
+    spectrumlineleft.cpp \
+    spectrumlineright.cpp
 
 HEADERS  += mainwindow.h \
     tagmanager.h \
@@ -46,7 +51,11 @@ HEADERS  += mainwindow.h \
     dboperate.h \
     LAVA/lava.h \
     floatwidget.h \
-    titlebar.h
+    titlebar.h \
+    spectrograph.h \
+    spectrumanalyser.h \
+    spectrumlineleft.h \
+    spectrumlineright.h
 
 FORMS    += mainwindow.ui
 
