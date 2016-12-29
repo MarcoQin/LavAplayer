@@ -34,23 +34,12 @@ void Spectrograph::paintEvent(QPaintEvent *event)
 
     QPainter painter(this);
 
-    QColor barColor(128, 127, 68);
-    const QColor gridColor = barColor.darker();
-    QPen gridPen(gridColor);
-    painter.setPen(gridPen);
+    QColor barColor(128, 127, 68, 200);
 
-    QVector<qreal> dashes;
-    dashes << 2 << 2;
-    gridPen.setDashPattern(dashes);
-    painter.setPen(gridPen);
-
-    int numBars = 200;
-//    const int numHorizontalSections = numBars;
-//    QLine line(rect().topLeft(), rect().bottomLeft());
-//    for (int i=1; i<numHorizontalSections; ++i) {
-//        line.translate(rect().width()/numHorizontalSections, 0);
-//            painter.drawLine(line);
-//    }
+    int numBars = m_bars_left.size() * 2;
+    if (numBars < 10) {
+        return;
+    }
 
     const int widgetWidth = rect().width();
     const int barPlusGapWidth = widgetWidth / numBars;
@@ -58,7 +47,12 @@ void Spectrograph::paintEvent(QPaintEvent *event)
     const int gapWidth = barPlusGapWidth - barWidth;
     const int paddingWidth = widgetWidth - numBars * (barWidth + gapWidth);
     const int leftPaddingWidth = (paddingWidth + gapWidth) / 2;
-    const int barHeight = rect().height() - 2 * gapWidth;
+
+    QGradient g;
+    g = QLinearGradient(QPointF(rect().width()/2, 0), QPointF(rect().width() /2, rect().height()));
+    g.setColorAt(0.8, barColor);
+    g.setColorAt(0.3, barColor.darker());
+    g.setSpread(QGradient::PadSpread);
 
     // left
     for (auto i = 0u; i < m_bars_left.size(); ++i) {
@@ -68,7 +62,6 @@ void Spectrograph::paintEvent(QPaintEvent *event)
         column_index = static_cast<uint32_t>(m_bars_left.size()) - i - 1;
 
         bar_height = m_bars_falloff_left[column_index];
-//        bar_height = m_bars_left[column_index];
 
 
         bar_height = std::max(0.0, bar_height);
@@ -78,7 +71,7 @@ void Spectrograph::paintEvent(QPaintEvent *event)
         bar.setWidth(barWidth);
         bar.setTop(rect().top() + gapWidth + (rect().height() - bar_height));
         bar.setBottom(rect().bottom() - gapWidth);
-        painter.fillRect(bar, barColor);
+        painter.fillRect(bar, g);
     }
 
     // right
@@ -88,7 +81,6 @@ void Spectrograph::paintEvent(QPaintEvent *event)
         auto column_index = i;
 
         bar_height = m_bars_falloff_right[column_index];
-//        bar_height = m_bars_left[column_index];
 
 
         bar_height = std::max(0.0, bar_height);
@@ -98,7 +90,7 @@ void Spectrograph::paintEvent(QPaintEvent *event)
         bar.setWidth(barWidth);
         bar.setTop(rect().top() + gapWidth + (rect().height() - bar_height));
         bar.setBottom(rect().bottom() - gapWidth);
-        painter.fillRect(bar, barColor);
+        painter.fillRect(bar, g);
     }
 
 }
@@ -107,9 +99,9 @@ void Spectrograph::spectrumChanged(fftw_complex *output_left, fftw_complex *outp
 {
 //    qDebug() << "spectrumChanged!!";
     create_spectrum_bars(output_left, results, rect().height() - 10, rect().width(),
-                         100, m_bars_left, m_bars_falloff_left);
+                         120, m_bars_left, m_bars_falloff_left);
     create_spectrum_bars(output_right, results, rect().height() - 10, rect().width(),
-                         100, m_bars_right, m_bars_falloff_right);
+                         120, m_bars_right, m_bars_falloff_right);
     emit barsGeneratedLeft(m_bars_falloff_left);
     emit barsGeneratedRight(m_bars_falloff_right);
     repaint();
