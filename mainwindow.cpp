@@ -94,6 +94,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     ui->cover->setScaledContents(true);
 
+    ui->pauseBtn->hide();
+
     spectrumGraph = new Spectrograph(this);
     spectrumLineLeft = new SpectrumLineLeft(this);
     spectrumLineRight = new SpectrumLineRight(this);
@@ -114,6 +116,7 @@ MainWindow::MainWindow(QWidget *parent) :
     PlayListTabWidget *tabWidget = new PlayListTabWidget(this);
     PlayListView * view = tabWidget->createTab();
     connect(this, SIGNAL(onAddSong()), view, SLOT(refreshModel()));
+    connect(this, SIGNAL(onSongStartPlay()), view, SLOT(refreshModel()));
     connect(view, SIGNAL(onSongDoubleClicked(QSqlRecord)), this, SLOT(onDoubleClickSong(QSqlRecord)));
 
     setAcceptDrops(true);
@@ -139,6 +142,8 @@ void MainWindow::connectSignals()
     connect(this, SIGNAL(posChanged(int)), this, SLOT(onPosChanged(int)));
 
     connect(ui->process_bar, SIGNAL(sliderReleased()), this, SLOT(onSliderMoved()));
+
+    connect(this, SIGNAL(onSongStartPlay()), this, SLOT(changeBtnToPause()));
 }
 
 MainWindow::~MainWindow()
@@ -192,6 +197,9 @@ void MainWindow::onDoubleClickSong(const QSqlRecord &rowInfo)
     m_last_position = 0;
     m_length = length;
     ui->process_bar->setMaximum(length);
+
+    setPlaying(0, rowInfo.value("id").toInt());
+    emit onSongStartPlay();
 }
 
 void MainWindow::setMinimumWindow()
@@ -227,4 +235,16 @@ void MainWindow::onPosChanged(int pos)
 void MainWindow::onSliderMoved()
 {
     LAVA::Core::instance()->seek_by_absolute_pos(static_cast<double>(ui->process_bar->value()));
+}
+
+void MainWindow::changeBtnToPause()
+{
+    ui->pauseBtn->show();
+    ui->playBtn->hide();
+}
+
+void MainWindow::changeBtnToPlay()
+{
+    ui->playBtn->show();
+    ui->pauseBtn->hide();
 }

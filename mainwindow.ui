@@ -998,6 +998,39 @@ background: rgb(153,153,153);
      <string/>
     </property>
    </widget>
+   <widget class="QPushButton" name="pauseBtn">
+    <property name="geometry">
+     <rect>
+      <x>138</x>
+      <y>163</y>
+      <width>20</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>20</width>
+      <height>20</height>
+     </size>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>20</width>
+      <height>20</height>
+     </size>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton#pauseBtn {
+border-image: url(:/pic/images/controls/bt_pause0.png);
+}
+QPushButton#pauseBtn:pressed {
+	border-image: url(:/pic/images/controls/bt_pause1.png);
+}</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
    <zorder>main_bg_color</zorder>
    <zorder>top_bg_brush</zorder>
    <zorder>mid_bg</zorder>
@@ -1041,6 +1074,7 @@ background: rgb(153,153,153);
    <zorder>artist</zorder>
    <zorder>album</zorder>
    <zorder>title</zorder>
+   <zorder>pauseBtn</zorder>
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>

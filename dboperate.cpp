@@ -38,6 +38,17 @@ void deleteSong(const int listIndex, const int id)
     q.exec();
 }
 
+void setPlaying(const int listIndex, const int id)
+{
+    QSqlQuery q;
+    QString table_name = "list_" + QString::number(listIndex);
+    q.prepare("update " + table_name + " set is_playing = 0 where is_playing = 1; ");
+    q.exec();
+    q.prepare("update " + table_name + " set is_playing = 1" + " where id = ?;");
+    q.addBindValue(id);
+    q.exec();
+}
+
 QString getListName(const int listIndex)
 {
     return "list_" + QString::number(listIndex);

@@ -21,4 +21,6 @@ QString getListName(const int listIndex);
 
 void deleteSong(const int listIndex, const int id);
 
+void setPlaying(const int listIndex, const int id);
+
 #endif // DBOPERATE_H

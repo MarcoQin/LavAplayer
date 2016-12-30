@@ -47,7 +47,7 @@ void PlayListView::setUpModel(const int listIndex)
     model->setHeaderData(model->fieldIndex("artist"), Qt::Horizontal, tr("Artist"));
     model->setHeaderData(model->fieldIndex("album"), Qt::Horizontal, tr("Album"));
     model->setHeaderData(model->fieldIndex("track"), Qt::Horizontal, tr("#"));
-    model->setHeaderData(model->fieldIndex("id"), Qt::Horizontal, tr(""));
+    model->setHeaderData(model->fieldIndex("is_playing"), Qt::Horizontal, tr(""));
 
     horizontalHeader()->moveSection(model->fieldIndex("track"), 1);
 
@@ -60,13 +60,14 @@ void PlayListView::setUpModel(const int listIndex)
     this->setModel(model);
 
     QList<QString> fieldToHide;
-    fieldToHide << "path" << "bitrate" << "samplerate" << "length" << "genre" << "year" << "is_playing";
+    fieldToHide << "path" << "bitrate" << "samplerate" << "length" << "genre" << "year" << "id";
 
     for (auto i = fieldToHide.begin(); i != fieldToHide.end(); ++i) {
         this->setColumnHidden(model->fieldIndex(*i), true);
     }
 
-    horizontalHeader()->moveSection(model->fieldIndex("track"), model->fieldIndex("id") + 1);
+    horizontalHeader()->moveSection(model->fieldIndex("track"), 1);
+    horizontalHeader()->moveSection(model->fieldIndex("is_playing"), 0);
     setColumnWidth(model->fieldIndex("track"), 20);
     setColumnWidth(model->fieldIndex("title"), 300);
     setColumnWidth(model->fieldIndex("artist"), 200);

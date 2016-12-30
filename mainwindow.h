@@ -29,6 +29,7 @@ public:
     void cbk(pcm_stereo_sample *input_buffer);
 signals:
     void onAddSong();
+    void onSongStartPlay();
     void posChanged(int pos);
 public slots:
     void onDoubleClickSong(const QSqlRecord &rowInfo);
@@ -38,6 +39,8 @@ public slots:
     void moveEvent(QMoveEvent *event);
     void onPosChanged(int pos);
     void onSliderMoved();
+    void changeBtnToPause();
+    void changeBtnToPlay();
 protected:
     void dragEnterEvent(QDragEnterEvent *e);
     void dropEvent(QDropEvent *e);
