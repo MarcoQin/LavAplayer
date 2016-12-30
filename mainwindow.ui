@@ -691,7 +691,7 @@ border: 2px solid #000000;</string>
 }</string>
     </property>
     <property name="text">
-     <string>00:00:12</string>
+     <string>00:00:00</string>
     </property>
    </widget>
    <widget class="QLabel" name="timePassed_back">
@@ -728,7 +728,7 @@ color: rgba(50,50,50,100%);
 }</string>
     </property>
     <property name="text">
-     <string>00:04:06</string>
+     <string>00:00:00</string>
     </property>
    </widget>
    <widget class="QLabel" name="timePassedTotal_back">
@@ -769,7 +769,7 @@ background-color: qlineargradient(spread:pad, x1:0.437811, y1:0, x2:0.483299, y2
 border-radius: 2px;</string>
     </property>
     <property name="text">
-     <string>FLAC</string>
+     <string>Format</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
@@ -795,7 +795,7 @@ background-color: qlineargradient(spread:pad, x1:0.437811, y1:0, x2:0.483299, y2
 border-radius: 2px;</string>
     </property>
     <property name="text">
-     <string>1064 Kb/s</string>
+     <string>BitRate</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
@@ -821,7 +821,7 @@ background-color: qlineargradient(spread:pad, x1:0.437811, y1:0, x2:0.483299, y2
 border-radius: 2px;</string>
     </property>
     <property name="text">
-     <string>44100 Hz</string>
+     <string>SampleRate</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
@@ -848,7 +848,7 @@ border-radius: 2px;</string>
 }</string>
     </property>
     <property name="text">
-     <string>5%</string>
+     <string>0%</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
@@ -957,7 +957,7 @@ background: rgb(153,153,153);
 }</string>
     </property>
     <property name="text">
-     <string>鹿乃</string>
+     <string/>
     </property>
    </widget>
    <widget class="QLabel" name="album">
@@ -976,7 +976,7 @@ background: rgb(153,153,153);
 }</string>
     </property>
     <property name="text">
-     <string>或る街の白昼夢</string>
+     <string/>
     </property>
    </widget>
    <widget class="QLabel" name="title">
@@ -995,7 +995,7 @@ background: rgb(153,153,153);
 }</string>
     </property>
     <property name="text">
-     <string>メリーメリー álbum ver.</string>
+     <string/>
     </property>
    </widget>
    <zorder>main_bg_color</zorder>
