@@ -64,8 +64,20 @@ TagInfo TagManager::getTagInfo(const char *filename)
           cout << "track   - \"" << tag->track()   << "\"" << endl;
           cout << "genre   - \"" << tag->genre()  << "\"" << endl;
           info.title = convert(tag->title());
+          if (info.title.isEmpty()) {
+              std::string p(filename);
+              auto start = p.rfind("/");
+              auto stop = p.rfind(".");
+              info.title = p.substr(start + 1, stop).c_str();
+          }
           info.artist = convert(tag->artist());
+          if (info.artist.isEmpty()) {
+              info.artist = "N/A";
+          }
           info.album = convert(tag->album());
+          if (info.album.isEmpty()) {
+              info.album = "N/A";
+          }
           info.year = tag->year();
           info.track = tag->track();
           info.genre = convert(tag->genre());
