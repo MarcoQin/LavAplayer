@@ -15,26 +15,10 @@ void addSong(
         const QString genre,
         const int track,
         const int year
-        )
-{
-    QSqlQuery q;
-    q.prepare("insert into list_" + QString::number(listIndex) + " (path, title, artist, album, bitrate, samplerate, length, genre, track, year) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-    q.addBindValue(path);
-    q.addBindValue(title);
-    q.addBindValue(artist);
-    q.addBindValue(album);
-    q.addBindValue(bitrate);
-    q.addBindValue(samplerate);
-    q.addBindValue(length);
-    q.addBindValue(genre);
-    q.addBindValue(track);
-    q.addBindValue(year);
-    q.exec();
-}
+        );
 
-QString getListName(const int listIndex)
-{
-    return "list_" + QString::number(listIndex);
-}
+QString getListName(const int listIndex);
+
+void deleteSong(const int listIndex, const int id);
 
 #endif // DBOPERATE_H

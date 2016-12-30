@@ -17,8 +17,10 @@ signals:
 public slots:
     void refreshModel();
     void rowDoubleClicked(const QModelIndex &index);
+    void keyPressEvent(QKeyEvent *event);
 private:
     QSqlRelationalTableModel *model;
+    int m_listIndex;
 };
 
 #endif // PLAYLISTVIEW_H

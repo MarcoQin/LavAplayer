@@ -35,12 +35,13 @@ SOURCES += main.cpp\
         playlistview.cpp \
         playlisttabwidget.cpp \
         LAVA/lava.cpp \
-    floatwidget.cpp \
-    titlebar.cpp \
-    spectrograph.cpp \
-    spectrumanalyser.cpp \
-    spectrumlineleft.cpp \
-    spectrumlineright.cpp
+        floatwidget.cpp \
+        titlebar.cpp \
+        spectrograph.cpp \
+        spectrumanalyser.cpp \
+        spectrumlineleft.cpp \
+        spectrumlineright.cpp \
+        dboperate.cpp
 
 HEADERS  += mainwindow.h \
     tagmanager.h \
