@@ -314,7 +314,19 @@ border-radius: 6px;</string>
      </size>
     </property>
     <property name="styleSheet">
-     <string notr="true">border-image: url(:/pic/images/controls/note0.png);</string>
+     <string notr="true">
+QPushButton#noteBtn {
+
+	border-image: url(:/pic/images/controls/note0.png);
+
+}
+
+QPushButton#noteBtn:pressed {
+
+	border-image: url(:/pic/images/controls/note1.png);
+
+}
+</string>
     </property>
     <property name="text">
      <string/>
@@ -342,7 +354,18 @@ border-radius: 6px;</string>
      </size>
     </property>
     <property name="styleSheet">
-     <string notr="true">border-image: url(:/pic/images/controls/stopafter2.png);</string>
+     <string notr="true">QPushButton#stopAfterBtn {
+
+	border-image: url(:/pic/images/controls/stopafter2.png);
+
+}
+
+QPushButton#stopAfterBtn:pressed {
+
+	border-image: url(:/pic/images/controls/stopafter3.png);
+
+}
+</string>
     </property>
     <property name="text">
      <string/>
@@ -370,7 +393,18 @@ border-radius: 6px;</string>
      </size>
     </property>
     <property name="styleSheet">
-     <string notr="true">border-image: url(:/pic/images/controls/po_repeat_pl0.png);</string>
+     <string notr="true">QPushButton#repeatBtn {
+
+	border-image: url(:/pic/images/controls/po_repeat_pl0.png);
+
+}
+
+QPushButton#repeatBtn:pressed {
+
+	border-image: url(:/pic/images/controls/po_repeat_pl1.png);
+
+}
+</string>
     </property>
     <property name="text">
      <string/>
@@ -398,7 +432,12 @@ border-radius: 6px;</string>
      </size>
     </property>
     <property name="styleSheet">
-     <string notr="true">border-image: url(:/pic/images/controls/stop0.png);</string>
+     <string notr="true">QPushButton#stopBtn {
+	border-image: url(:/pic/images/controls/stop0.png);
+}
+QPushButton#stopBtn:pressed {
+	border-image: url(:/pic/images/controls/stop1.png);
+}</string>
     </property>
     <property name="text">
      <string/>
@@ -426,7 +465,12 @@ border-radius: 6px;</string>
      </size>
     </property>
     <property name="styleSheet">
-     <string notr="true">border-image: url(:/pic/images/controls/bt_prev0.png);</string>
+     <string notr="true">QPushButton#prevBtn {
+	border-image: url(:/pic/images/controls/bt_prev0.png);
+}
+QPushButton#prevBtn:pressed {
+	border-image: url(:/pic/images/controls/bt_prev1.png);
+}</string>
     </property>
     <property name="text">
      <string/>
@@ -520,7 +564,19 @@ border-image: url(:/pic/images/controls/bt_next1.png);
      </size>
     </property>
     <property name="styleSheet">
-     <string notr="true">border-image: url(:/pic/images/controls/bt_mood0on.png);</string>
+     <string notr="true">
+QPushButton#likeBtn {
+
+	border-image: url(:/pic/images/controls/bt_mood0on.png);
+
+}
+
+QPushButton#likeBtn:pressed {
+
+	border-image: url(:/pic/images/controls/bt_mood1on.png);
+
+}
+</string>
     </property>
     <property name="text">
      <string/>
@@ -548,7 +604,19 @@ border-image: url(:/pic/images/controls/bt_next1.png);
      </size>
     </property>
     <property name="styleSheet">
-     <string notr="true">border-image: url(:/pic/images/controls/bt_skip0on.png);</string>
+     <string notr="true">
+QPushButton#skipBtn {
+
+	border-image: url(:/pic/images/controls/bt_skip0on.png);
+
+}
+
+QPushButton#skipBtn:pressed {
+
+	border-image: url(:/pic/images/controls/bt_skip1on.png);
+
+}
+</string>
     </property>
     <property name="text">
      <string/>
