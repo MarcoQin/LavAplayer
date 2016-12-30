@@ -52,6 +52,7 @@
         <file>images/_knob.png</file>
         <file>images/voldot4g.png</file>
         <file>images/voldot4s.png</file>
+        <file>images/_mute0.png</file>
     </qresource>
     <qresource prefix="/fonts">
         <file>fonts/digital-7 (mono).ttf</file>
