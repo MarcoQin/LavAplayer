@@ -144,6 +144,8 @@ void MainWindow::connectSignals()
     connect(ui->process_bar, SIGNAL(sliderReleased()), this, SLOT(onSliderMoved()));
 
     connect(this, SIGNAL(onSongStartPlay()), this, SLOT(changeBtnToPause()));
+
+    connect(ui->pauseBtn, SIGNAL(clicked()), this, SLOT(pauseSong()));
 }
 
 MainWindow::~MainWindow()
@@ -247,4 +249,9 @@ void MainWindow::changeBtnToPlay()
 {
     ui->playBtn->show();
     ui->pauseBtn->hide();
+}
+
+void MainWindow::pauseSong()
+{
+    LAVA::Core::instance()->pause();
 }

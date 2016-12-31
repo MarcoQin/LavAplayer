@@ -63,6 +63,8 @@ private:
     Spectrograph *spectrumGraph;
     SpectrumLineLeft *spectrumLineLeft;
     SpectrumLineRight *spectrumLineRight;
+private slots:
+    void pauseSong();
 };
 
 #endif // MAINWINDOW_H
