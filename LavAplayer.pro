@@ -28,35 +28,37 @@ LIBS += \
     -lfftw3 \
 
 
-SOURCES += main.cpp\
-        mainwindow.cpp \
-        tagmanager.cpp \
-        customdial.cpp \
-        playlistview.cpp \
-        playlisttabwidget.cpp \
+SOURCES += \
+        src/main.cpp\
+        src/mainwindow.cpp \
+        src/tagmanager.cpp \
+        src/customdial.cpp \
+        src/playlistview.cpp \
+        src/playlisttabwidget.cpp \
         LAVA/lava.cpp \
-        floatwidget.cpp \
-        titlebar.cpp \
-        spectrograph.cpp \
-        spectrumanalyser.cpp \
-        spectrumlineleft.cpp \
-        spectrumlineright.cpp \
-        dboperate.cpp
+        src/floatwidget.cpp \
+        src/titlebar.cpp \
+        src/spectrograph.cpp \
+        src/spectrumanalyser.cpp \
+        src/spectrumlineleft.cpp \
+        src/spectrumlineright.cpp \
+        src/dboperate.cpp
 
-HEADERS  += mainwindow.h \
-    tagmanager.h \
-    customdial.h \
-    playlistview.h \
-    playlisttabwidget.h \
-    initdb.h \
-    dboperate.h \
+HEADERS  += \
+    src/mainwindow.h \
+    src/tagmanager.h \
+    src/customdial.h \
+    src/playlistview.h \
+    src/playlisttabwidget.h \
+    src/initdb.h \
+    src/dboperate.h \
     LAVA/lava.h \
-    floatwidget.h \
-    titlebar.h \
-    spectrograph.h \
-    spectrumanalyser.h \
-    spectrumlineleft.h \
-    spectrumlineright.h
+    src/floatwidget.h \
+    src/titlebar.h \
+    src/spectrograph.h \
+    src/spectrumanalyser.h \
+    src/spectrumlineleft.h \
+    src/spectrumlineright.h
 
 FORMS    += mainwindow.ui
 

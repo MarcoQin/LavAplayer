@@ -3,14 +3,28 @@
 
 #include <QtSql>
 #include <QString>
+#include <QtCore>
+#include <QDebug>
 
 QSqlError initDb()
 {
     QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
-    db.setDatabaseName("playlist");
+    QString runtimePath = QCoreApplication::applicationDirPath();
+    QString dbPath = runtimePath +  + "/../Resources/playlist";
 
-    if (!db.open())
+    qDebug() << dbPath;
+
+    QFile f(dbPath);
+    if (!f.exists()) {
+        f.open(QIODevice::WriteOnly);
+    }
+    f.close();
+
+    db.setDatabaseName(dbPath);
+
+    if (!db.open()) {
         return db.lastError();
+    }
 
     QStringList tables = db.tables();
     if (!tables.isEmpty()) {

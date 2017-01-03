@@ -86,7 +86,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QSqlError err = initDb();
     if (err.type() != QSqlError::NoError) {
         QMessageBox::critical(this, "Unable to initialize Database",
-                    "Error initializing database: " + err.text());
+                    "Error initializing database---> " + err.text());
         return;
     }
 
