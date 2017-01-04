@@ -29,7 +29,8 @@ public:
     void cbk(pcm_stereo_sample *input_buffer);
 signals:
     void onAddSong();
-    void onSongStartPlay();
+    void songStartPlay();
+    void songStartPlay(int id);
     void posChanged(int pos);
 public slots:
     void onDoubleClickSong(const QSqlRecord &rowInfo);

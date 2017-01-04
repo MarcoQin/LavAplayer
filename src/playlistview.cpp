@@ -9,9 +9,12 @@
 
 #include "tagmanager.h"
 
+#include "playstatedelegate.h"
+
 PlayListView::PlayListView(QWidget *parent) :
     QTableView(parent)
 {
+    state = new P_State;
     setEditTriggers(QAbstractItemView::NoEditTriggers);
     setSelectionBehavior(QAbstractItemView::SelectRows);
     setAlternatingRowColors(true);
@@ -47,7 +50,7 @@ void PlayListView::setUpModel(const int listIndex)
     model->setHeaderData(model->fieldIndex("artist"), Qt::Horizontal, tr("Artist"));
     model->setHeaderData(model->fieldIndex("album"), Qt::Horizontal, tr("Album"));
     model->setHeaderData(model->fieldIndex("track"), Qt::Horizontal, tr("#"));
-    model->setHeaderData(model->fieldIndex("is_playing"), Qt::Horizontal, tr(""));
+    model->setHeaderData(model->fieldIndex("id"), Qt::Horizontal, tr(""));
 
     horizontalHeader()->moveSection(model->fieldIndex("track"), 1);
 
@@ -60,18 +63,29 @@ void PlayListView::setUpModel(const int listIndex)
     this->setModel(model);
 
     QList<QString> fieldToHide;
-    fieldToHide << "path" << "bitrate" << "samplerate" << "length" << "genre" << "year" << "id";
+    fieldToHide << "path" << "bitrate" << "samplerate" << "length" << "genre" << "year" << "is_playing";
 
     for (auto i = fieldToHide.begin(); i != fieldToHide.end(); ++i) {
         this->setColumnHidden(model->fieldIndex(*i), true);
     }
 
     horizontalHeader()->moveSection(model->fieldIndex("track"), 1);
-    horizontalHeader()->moveSection(model->fieldIndex("is_playing"), 0);
+    horizontalHeader()->moveSection(model->fieldIndex("id"), 0);
     setColumnWidth(model->fieldIndex("track"), 20);
     setColumnWidth(model->fieldIndex("title"), 300);
     setColumnWidth(model->fieldIndex("artist"), 200);
 
+
+
+    setItemDelegateForColumn(0, new PlayStateDelegate(state));
+
+}
+
+void PlayListView::onSongStartPlay(int id)
+{
+    state->id = id;
+    state->is_playing = true;
+    this->viewport()->repaint();
 }
 
 void PlayListView::refreshModel()
@@ -101,7 +115,7 @@ void PlayListView::keyPressEvent(QKeyEvent *event)
                 qDebug() << *i;
                 deleteSong(m_listIndex, *i);
             }
-            refreshModel();
+            model->select();
         }
     }
 }

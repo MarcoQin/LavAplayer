@@ -116,7 +116,7 @@ MainWindow::MainWindow(QWidget *parent) :
     PlayListTabWidget *tabWidget = new PlayListTabWidget(this);
     PlayListView * view = tabWidget->createTab();
     connect(this, SIGNAL(onAddSong()), view, SLOT(refreshModel()));
-    connect(this, SIGNAL(onSongStartPlay()), view, SLOT(refreshModel()));
+    connect(this, SIGNAL(songStartPlay(int)), view, SLOT(onSongStartPlay(int)));
     connect(view, SIGNAL(onSongDoubleClicked(QSqlRecord)), this, SLOT(onDoubleClickSong(QSqlRecord)));
 
     setAcceptDrops(true);
@@ -143,7 +143,7 @@ void MainWindow::connectSignals()
 
     connect(ui->process_bar, SIGNAL(sliderReleased()), this, SLOT(onSliderMoved()));
 
-    connect(this, SIGNAL(onSongStartPlay()), this, SLOT(changeBtnToPause()));
+    connect(this, SIGNAL(songStartPlay()), this, SLOT(changeBtnToPause()));
 
     connect(ui->pauseBtn, SIGNAL(clicked()), this, SLOT(pauseSong()));
 }
@@ -200,8 +200,10 @@ void MainWindow::onDoubleClickSong(const QSqlRecord &rowInfo)
     m_length = length;
     ui->process_bar->setMaximum(length);
 
-    setPlaying(0, rowInfo.value("id").toInt());
-    emit onSongStartPlay();
+    int id = rowInfo.value("id").toInt();
+    setPlaying(0, id);
+    emit songStartPlay(id);
+    emit songStartPlay();
 }
 
 void MainWindow::setMinimumWindow()

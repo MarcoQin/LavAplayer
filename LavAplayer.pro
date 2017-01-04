@@ -29,20 +29,21 @@ LIBS += \
 
 
 SOURCES += \
-        src/main.cpp\
-        src/mainwindow.cpp \
-        src/tagmanager.cpp \
-        src/customdial.cpp \
-        src/playlistview.cpp \
-        src/playlisttabwidget.cpp \
-        LAVA/lava.cpp \
-        src/floatwidget.cpp \
-        src/titlebar.cpp \
-        src/spectrograph.cpp \
-        src/spectrumanalyser.cpp \
-        src/spectrumlineleft.cpp \
-        src/spectrumlineright.cpp \
-        src/dboperate.cpp
+    src/main.cpp\
+    src/mainwindow.cpp \
+    src/tagmanager.cpp \
+    src/customdial.cpp \
+    src/playlistview.cpp \
+    src/playlisttabwidget.cpp \
+    LAVA/lava.cpp \
+    src/floatwidget.cpp \
+    src/titlebar.cpp \
+    src/spectrograph.cpp \
+    src/spectrumanalyser.cpp \
+    src/spectrumlineleft.cpp \
+    src/spectrumlineright.cpp \
+    src/dboperate.cpp \
+    src/playstatedelegate.cpp
 
 HEADERS  += \
     src/mainwindow.h \
@@ -58,7 +59,8 @@ HEADERS  += \
     src/spectrograph.h \
     src/spectrumanalyser.h \
     src/spectrumlineleft.h \
-    src/spectrumlineright.h
+    src/spectrumlineright.h \
+    src/playstatedelegate.h
 
 FORMS    += mainwindow.ui
 
