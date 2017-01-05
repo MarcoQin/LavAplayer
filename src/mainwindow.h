@@ -47,19 +47,14 @@ protected:
     void dropEvent(QDropEvent *e);
 
 private:
-    enum PlayState {
-        Play = 0,
-        Pause,
-        Stop
-    };
 
     int m_last_position = 0;
     int m_length = 0;
     void connectSignals();
     Ui::MainWindow *ui;
     UI::TitleBar *titleBar;
-    fftw_plan m_fftw_plan_left;
-    fftw_complex *m_fftw_output_left;
+
+
     SpectrumAnalyser *analyser;
     Spectrograph *spectrumGraph;
     SpectrumLineLeft *spectrumLineLeft;

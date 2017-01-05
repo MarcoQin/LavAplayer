@@ -76,8 +76,6 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     analyser = new SpectrumAnalyser(this);
 
-    size_t results = (static_cast<size_t>(8192) / 2) + 1;
-    m_fftw_output_left = static_cast<fftw_complex*> (fftw_malloc(sizeof(fftw_complex) * results));
     setWindowFlags(Qt::FramelessWindowHint);
     setMouseTracking(true);
 

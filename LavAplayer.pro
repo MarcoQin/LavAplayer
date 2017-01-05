@@ -43,7 +43,8 @@ SOURCES += \
     src/spectrumlineleft.cpp \
     src/spectrumlineright.cpp \
     src/dboperate.cpp \
-    src/playstatedelegate.cpp
+    src/playstatedelegate.cpp \
+    src/player.cpp
 
 HEADERS  += \
     src/mainwindow.h \
@@ -60,7 +61,8 @@ HEADERS  += \
     src/spectrumanalyser.h \
     src/spectrumlineleft.h \
     src/spectrumlineright.h \
-    src/playstatedelegate.h
+    src/playstatedelegate.h \
+    src/player.h
 
 FORMS    += mainwindow.ui
 
