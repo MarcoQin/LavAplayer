@@ -15,6 +15,11 @@
 #include "spectrumlineright.h"
 
 
+#include "customdial.h"
+#include "player.h"
+#include "playlisttabwidget.h"
+#include "playlistview.h"
+
 namespace Ui {
 class MainWindow;
 }
@@ -26,13 +31,15 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
-    void cbk(pcm_stereo_sample *input_buffer);
 signals:
     void onAddSong();
     void songStartPlay();
     void songStartPlay(int id);
+    void songPaused();
+    void songStopped();
     void posChanged(int pos);
 public slots:
+    void onAudioBufferReady(pcm_stereo_sample *input_buffer);
     void onDoubleClickSong(const QSqlRecord &rowInfo);
     void setMinimumWindow();
     void showEvent(QShowEvent *event);
@@ -42,12 +49,14 @@ public slots:
     void onSliderMoved();
     void changeBtnToPause();
     void changeBtnToPlay();
+    void onPlayStateChanged(Player::PlayState state);
 protected:
     void dragEnterEvent(QDragEnterEvent *e);
     void dropEvent(QDropEvent *e);
 
 private:
 
+    Player *m_player;
     int m_last_position = 0;
     int m_length = 0;
     void connectSignals();
@@ -59,8 +68,11 @@ private:
     Spectrograph *spectrumGraph;
     SpectrumLineLeft *spectrumLineLeft;
     SpectrumLineRight *spectrumLineRight;
+
+    PlayListTabWidget *playListTabWidget;
+    CustomDial *volumeDial;
 private slots:
-    void pauseSong();
+    void playSong();
 };
 
 #endif // MAINWINDOW_H

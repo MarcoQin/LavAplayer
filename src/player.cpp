@@ -39,6 +39,10 @@ Player::Player(QObject *parent) : QObject(parent)
 {
     LavaCBK *cbk = new LavaCBK(this);
     LAVA::Core::instance()->setAudioCallbackInject(static_cast<LAVA::AudioCallbackInject*>(cbk));
+//    qRegisterMetaType<PlayState>("Player::PlayState");
+//    qRegisterMetaType<PlayState>("PlayState");
+//    qRegisterMetaType<Player::PlayState>("Player::PlayState");
+//    qRegisterMetaType<Player::PlayState>("PlayState");
 }
 
 void Player::cbk(pcm_stereo_sample *input_buffer)
@@ -99,4 +103,16 @@ void Player::emitStateSignal()
 Player::PlayState Player::currentState()
 {
     return m_state;
+}
+
+void Player::seekTo(double pos)
+{
+    if (m_state == Playing || m_state == Paused) {
+        LAVA::Core::instance()->seek_by_absolute_pos(pos);
+    }
+}
+
+void Player::setVolume(int value)
+{
+    LAVA::Core::instance()->set_volume(value);
 }

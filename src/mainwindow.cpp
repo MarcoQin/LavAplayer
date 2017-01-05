@@ -19,10 +19,7 @@
 #include <QMimeData>
 #include <QDragEnterEvent>
 #include <QDragLeaveEvent>
-#include "customdial.h"
 
-#include "playlisttabwidget.h"
-#include "playlistview.h"
 
 #include "initdb.h"
 #include "dboperate.h"
@@ -35,39 +32,9 @@
 #include "spectrumanalyser.h"
 
 
-class CBK : public LAVA::AudioCallbackInject
-{
-public:
-    CBK(MainWindow * mainWindow = nullptr);
-    virtual void update(uint8_t *stream, int len);
-private:
-    MainWindow *inst = nullptr;
-    pcm_stereo_sample *buf;
-};
-
-CBK::CBK(MainWindow *mainWindow)
-{
-    inst = mainWindow;
-    buf = static_cast<pcm_stereo_sample *>(calloc(sample_buffer_size, sizeof(pcm_stereo_sample)));
-}
-
-void CBK::update(uint8_t *stream, int len)
-{
-    memset(buf, 0, sample_buffer_size);
-    memcpy(buf, (int16_t *)stream,  len);
-    if (inst) {
-        inst->cbk(buf);
-    }
-}
-
-void MainWindow::cbk(pcm_stereo_sample *input_buffer)
+void MainWindow::onAudioBufferReady(pcm_stereo_sample *input_buffer)
 {
     analyser->execute_stereo(input_buffer);
-    int cur_pos = static_cast<int>(LAVA::Core::instance()->time_position());
-    if (cur_pos != m_last_position) {
-        m_last_position = cur_pos;
-        emit posChanged(cur_pos);
-    }
 }
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -107,23 +74,25 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->timePassedTotal->setFont(font);
     ui->timePassedTotal_back->setFont(font);
 
-    CustomDial *dial = new CustomDial(this, 0, 100);
-    dial->setValue(100);
-    dial->setGeometry(QRect(780 - 8, 535 - 8,90 + 26, 90 + 26));
+    volumeDial = new CustomDial(this, 0, 100);
+    volumeDial->setValue(100);
+    volumeDial->setGeometry(QRect(780 - 8, 535 - 8,90 + 26, 90 + 26));
 
-    PlayListTabWidget *tabWidget = new PlayListTabWidget(this);
-    PlayListView * view = tabWidget->createTab();
+    playListTabWidget = new PlayListTabWidget(this);
+    PlayListView * view = playListTabWidget->createTab();
     connect(this, SIGNAL(onAddSong()), view, SLOT(refreshModel()));
     connect(this, SIGNAL(songStartPlay(int)), view, SLOT(onSongStartPlay(int)));
+    connect(this, SIGNAL(songStartPlay()), view, SLOT(onSongStartPlay()));
+    connect(this, SIGNAL(songPaused()), view, SLOT(onSongPaused()));
+    connect(this, SIGNAL(songStopped()), view, SLOT(onSongStopped()));
     connect(view, SIGNAL(onSongDoubleClicked(QSqlRecord)), this, SLOT(onDoubleClickSong(QSqlRecord)));
 
     setAcceptDrops(true);
 
     titleBar = new UI::TitleBar(this);
+    m_player = Player::instance();
+    connect(m_player, SIGNAL(aboutToStop()), view, SLOT(onSongAboutToStop()));
     connectSignals();
-
-    CBK *cbk = new CBK(this);
-    LAVA::Core::instance()->setAudioCallbackInject(static_cast<LAVA::AudioCallbackInject*>(cbk));
 
 }
 
@@ -137,13 +106,16 @@ void MainWindow::connectSignals()
     connect(spectrumGraph, SIGNAL(barsGeneratedLeft(std::vector<double>&)), spectrumLineLeft, SLOT(onBarGenerated(std::vector<double>&)));
     connect(spectrumGraph, SIGNAL(barsGeneratedRight(std::vector<double>&)), spectrumLineRight, SLOT(onBarGenerated(std::vector<double>&)));
 
-    connect(this, SIGNAL(posChanged(int)), this, SLOT(onPosChanged(int)));
 
     connect(ui->process_bar, SIGNAL(sliderReleased()), this, SLOT(onSliderMoved()));
 
-    connect(this, SIGNAL(songStartPlay()), this, SLOT(changeBtnToPause()));
-
-    connect(ui->pauseBtn, SIGNAL(clicked()), this, SLOT(pauseSong()));
+    connect(m_player, SIGNAL(audioBufferReady(pcm_stereo_sample*)), this, SLOT(onAudioBufferReady(pcm_stereo_sample*)));
+    connect(m_player, SIGNAL(positionChanged(int)), this, SLOT(onPosChanged(int)));
+    connect(ui->pauseBtn, SIGNAL(clicked()), m_player, SLOT(pause()));
+    connect(ui->stopBtn, SIGNAL(clicked()), m_player, SLOT(stop()));
+    connect(ui->playBtn, SIGNAL(clicked()), m_player, SLOT(play()));
+    connect(m_player, SIGNAL(playStateChange(Player::PlayState)), this, SLOT(onPlayStateChanged(Player::PlayState)));
+    connect(volumeDial, SIGNAL(valueChanged(int)), m_player, SLOT(setVolume(int)));
 }
 
 MainWindow::~MainWindow()
@@ -173,7 +145,11 @@ void MainWindow::onDoubleClickSong(const QSqlRecord &rowInfo)
 {
     QString path = rowInfo.value("path").toString();
     qDebug() << path;
-    LAVA::Core::instance()->load_file(path.toStdString().c_str());
+//    LAVA::Core::instance()->load_file(path.toStdString().c_str());
+
+    m_player->play(path);
+
+
     const QString title = rowInfo.value("title").toString();
     ui->title->setText(title);
     ui->album->setText(rowInfo.value("album").toString());
@@ -236,7 +212,8 @@ void MainWindow::onPosChanged(int pos)
 
 void MainWindow::onSliderMoved()
 {
-    LAVA::Core::instance()->seek_by_absolute_pos(static_cast<double>(ui->process_bar->value()));
+//    LAVA::Core::instance()->seek_by_absolute_pos(static_cast<double>(ui->process_bar->value()));
+    m_player->seekTo(static_cast<double>(ui->process_bar->value()));
 }
 
 void MainWindow::changeBtnToPause()
@@ -251,7 +228,39 @@ void MainWindow::changeBtnToPlay()
     ui->pauseBtn->hide();
 }
 
-void MainWindow::pauseSong()
+void MainWindow::playSong()
 {
-    LAVA::Core::instance()->pause();
+    if (m_player->currentState() != Player::NoState) {
+        m_player->play();
+    }
+}
+
+void MainWindow::onPlayStateChanged(Player::PlayState state)
+{
+    switch (state) {
+    case Player::Playing:
+    {
+        ui->pauseBtn->show();
+        ui->playBtn->hide();
+        emit songStartPlay();
+        break;
+    }
+    case Player::Paused:
+    {
+        ui->playBtn->show();
+        ui->pauseBtn->hide();
+        emit songPaused();
+        break;
+    }
+    case Player::Stopped:
+    {
+        ui->playBtn->show();
+        ui->pauseBtn->hide();
+        spectrumGraph->cleanGraph();
+        emit songStopped();
+        break;
+    }
+    default:
+        break;
+    }
 }

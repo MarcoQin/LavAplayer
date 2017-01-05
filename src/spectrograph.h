@@ -27,6 +27,7 @@ signals:
 
 public slots:
     void spectrumChanged(fftw_complex *output_left, fftw_complex *output_right, int results);
+    void cleanGraph();
 private:
     std::vector<double> m_bars_left;
     std::vector<double> m_bars_right;

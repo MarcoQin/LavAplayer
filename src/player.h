@@ -7,20 +7,25 @@
 class Player : public QObject
 {
     Q_OBJECT
+    Q_ENUMS(PlayState)
 public:
+
     enum PlayState {
-        NoState = 0,
+        NoState,
         Playing,
         Paused,
         Stopped
     };
-
     static Player *instance();
+    Player::PlayState currentState();
+
+public slots:
     void play(QString &filename);
     void play();
     void pause();
     void stop();
-    Player::PlayState currentState();
+    void seekTo(double pos);
+    void setVolume(int value);
 
     void cbk(pcm_stereo_sample *input_buffer);
 private:
@@ -32,12 +37,13 @@ private:
     void emitStateSignal();
 
 signals:
-    void playStateChange(PlayState &m_state);
+    void playStateChange(Player::PlayState state);
     void positionChanged(int pos);
     void aboutToStop();
     void audioBufferReady(pcm_stereo_sample *input_buffer);
 
 public slots:
 };
+Q_DECLARE_METATYPE(Player::PlayState)
 
 #endif // PLAYER_H

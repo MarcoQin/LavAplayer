@@ -107,6 +107,17 @@ void Spectrograph::spectrumChanged(fftw_complex *output_left, fftw_complex *outp
     repaint();
 }
 
+void Spectrograph::cleanGraph()
+{
+    for (auto i = 0; i < m_bars_falloff_left.size(); ++i) {
+        m_bars_falloff_left[i] = 0;
+        m_bars_falloff_right[i] = 0;
+    }
+    emit barsGeneratedLeft(m_bars_falloff_left);
+    emit barsGeneratedRight(m_bars_falloff_right);
+    repaint();
+}
+
 void Spectrograph::create_spectrum_bars(fftw_complex *fftw_output, const size_t fftw_results,
                                         const int32_t win_height, const int32_t win_width,
                                         const uint32_t number_of_bars, std::vector<double> &bars,

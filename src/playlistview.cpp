@@ -15,6 +15,7 @@ PlayListView::PlayListView(QWidget *parent) :
     QTableView(parent)
 {
     state = new P_State;
+    state->state = Stopped;
     setEditTriggers(QAbstractItemView::NoEditTriggers);
     setSelectionBehavior(QAbstractItemView::SelectRows);
     setAlternatingRowColors(true);
@@ -84,7 +85,25 @@ void PlayListView::setUpModel(const int listIndex)
 void PlayListView::onSongStartPlay(int id)
 {
     state->id = id;
-    state->is_playing = true;
+    state->state = Playing;
+    this->viewport()->repaint();
+}
+
+void PlayListView::onSongStartPlay()
+{
+    state->state = Playing;
+    this->viewport()->repaint();
+}
+
+void PlayListView::onSongPaused()
+{
+    state->state = Paused;
+    this->viewport()->repaint();
+}
+
+void PlayListView::onSongStopped()
+{
+    state->state = Stopped;
     this->viewport()->repaint();
 }
 
@@ -95,7 +114,18 @@ void PlayListView::refreshModel()
 
 void PlayListView::rowDoubleClicked(const QModelIndex &index)
 {
-    const QSqlRecord rowInfo = model->record(index.row());
+    m_rowIndex = index.row();
+    const QSqlRecord rowInfo = model->record(m_rowIndex);
+    emit onSongDoubleClicked(rowInfo);
+}
+
+void PlayListView::onSongAboutToStop()
+{
+    m_rowIndex++;
+    if (m_rowIndex >= model->rowCount()) {
+        m_rowIndex = 0;
+    }
+    const QSqlRecord rowInfo = model->record(m_rowIndex);
     emit onSongDoubleClicked(rowInfo);
 }
 
