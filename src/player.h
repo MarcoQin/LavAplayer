@@ -4,6 +4,9 @@
 #include <QObject>
 #include "spectrumanalyser.h"
 
+#include <QVector>
+#include <QString>
+
 class Player : public QObject
 {
     Q_OBJECT
@@ -18,6 +21,7 @@ public:
     };
     static Player *instance();
     Player::PlayState currentState();
+    QVector<QString> getAudioDevices();
 
 public slots:
     void play(QString &filename);
@@ -26,6 +30,7 @@ public slots:
     void stop();
     void seekTo(double pos);
     void setVolume(int value);
+    void changeAudioDevice(QString device);
 
     void cbk(pcm_stereo_sample *input_buffer);
 private:

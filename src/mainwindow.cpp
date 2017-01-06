@@ -96,7 +96,11 @@ MainWindow::MainWindow(QWidget *parent) :
     titleBar = new UI::TitleBar(this);
     m_player = Player::instance();
     connect(m_player, SIGNAL(aboutToStop()), view, SLOT(onSongAboutToStop()));
+
+
+    m_settings = new Settings(this);
     connectSignals();
+    connect(ui->likeBtn, SIGNAL(clicked()), this, SLOT(showSettingDialog()));
 
 }
 
@@ -120,6 +124,8 @@ void MainWindow::connectSignals()
     connect(ui->playBtn, SIGNAL(clicked()), this, SLOT(tryPlaySong()));
     connect(m_player, SIGNAL(playStateChange(Player::PlayState)), this, SLOT(onPlayStateChanged(Player::PlayState)));
     connect(volumeDial, SIGNAL(valueChanged(int)), m_player, SLOT(setVolume(int)));
+
+    connect(m_settings, SIGNAL(deviceChanged(QString)), m_player, SLOT(changeAudioDevice(QString)));
 }
 
 MainWindow::~MainWindow()
@@ -277,4 +283,10 @@ void MainWindow::tryPlaySong()
     } else {
         m_player->play();
     }
+}
+
+void MainWindow::showSettingDialog()
+{
+    m_settings->setAudioDevices(m_player->getAudioDevices());
+    m_settings->show();
 }

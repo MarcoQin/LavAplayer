@@ -20,6 +20,8 @@
 #include "playlisttabwidget.h"
 #include "playlistview.h"
 
+#include "settings.h"
+
 namespace Ui {
 class MainWindow;
 }
@@ -72,8 +74,11 @@ private:
 
     PlayListTabWidget *playListTabWidget;
     CustomDial *volumeDial;
+
+    Settings *m_settings;
 private slots:
     void playSong();
+    void showSettingDialog();
 };
 
 #endif // MAINWINDOW_H

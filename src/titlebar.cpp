@@ -9,6 +9,10 @@ TitleBar::TitleBar(QWidget *parent) :
     setBackgroundColor(QColor(27, 27, 27, 100));
     setPosition(TopLeft);
     setCustomPositionOffset(QPoint(0, -barHight));
+    QString style = "QFrame{"
+                 "background-color: qlineargradient(spread:pad, x1:0.437811, y1:0, x2:0.483299, y2:1, stop:0.512438 rgba(72, 75, 78, 180), stop:1 rgba(27, 27, 27, 255));"
+                 "border-top-left-radius: 4px;border-top-right-radius: 4px;}";
+    setBackgroundStyleSheet(style);
 
     closeBtn = new QPushButton(this);
     closeBtn->setStyleSheet("QPushButton{border-image:url(:/Picture/res/close-btn.png);}"

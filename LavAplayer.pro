@@ -44,7 +44,8 @@ SOURCES += \
     src/spectrumlineright.cpp \
     src/dboperate.cpp \
     src/playstatedelegate.cpp \
-    src/player.cpp
+    src/player.cpp \
+    src/settings.cpp
 
 HEADERS  += \
     src/mainwindow.h \
@@ -62,9 +63,11 @@ HEADERS  += \
     src/spectrumlineleft.h \
     src/spectrumlineright.h \
     src/playstatedelegate.h \
-    src/player.h
+    src/player.h \
+    src/settings.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    settings.ui
 
 RESOURCES += \
     res.qrc

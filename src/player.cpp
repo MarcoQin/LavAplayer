@@ -1,6 +1,8 @@
 #include "player.h"
 
 #include "LAVA/lava.h"
+#include <vector>
+#include <string>
 
 class LavaCBK : public LAVA::AudioCallbackInject
 {
@@ -115,4 +117,19 @@ void Player::seekTo(double pos)
 void Player::setVolume(int value)
 {
     LAVA::Core::instance()->set_volume(value);
+}
+
+QVector<QString> Player::getAudioDevices()
+{
+    QVector<QString> devices;
+    foreach (std::string device, LAVA::Core::instance()->getAudioDevices()) {
+        devices.push_back(device.c_str());
+    }
+    return devices;
+}
+
+void Player::changeAudioDevice(QString device)
+{
+    std::string dev = device.toStdString().c_str();
+    LAVA::Core::instance()->setAudioDevice(dev);
 }

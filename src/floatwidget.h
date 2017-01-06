@@ -28,6 +28,7 @@ public:
     void resetPosition(QWidget *parent);
     void setPosition(Position pos);
     void setCustomPositionOffset(QPoint offset);
+    void setBackgroundStyleSheet(QString style);
 
 protected:
     virtual void showEvent(QShowEvent *event);

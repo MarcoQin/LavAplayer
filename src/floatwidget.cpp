@@ -36,11 +36,12 @@ void FloatWidget::applyBackgroundColorEffect()
           << "}";
     std::string style = styleStream.str();
     qDebug() << style.c_str();
-//    backgroundMask->setStyleSheet(style.c_str());
-    QString st = "QFrame{"
-                 "background-color: qlineargradient(spread:pad, x1:0.437811, y1:0, x2:0.483299, y2:1, stop:0.512438 rgba(72, 75, 78, 180), stop:1 rgba(27, 27, 27, 255));"
-                 "border-top-left-radius: 4px;border-top-right-radius: 4px;}";
-    backgroundMask->setStyleSheet(st);
+    backgroundMask->setStyleSheet(style.c_str());
+}
+
+void FloatWidget::setBackgroundStyleSheet(QString style)
+{
+    backgroundMask->setStyleSheet(style);
 }
 
 void FloatWidget::setBackgroundColor(QColor color)
