@@ -1,6 +1,10 @@
 # LavAplayer
 Music player based on LAVA.
 
+#### UI
+
+- [TECH v1.5.2](http://br3tt.deviantart.com/art/TECH-v1-5-2-162724968)
+
 #### Dependencies
 
 - [TagLib 1.11.1](http://taglib.org/)
@@ -15,4 +19,14 @@ Music player based on LAVA.
 
 #### Gallery
 
+**Play**
+
 ![play](/gallery/play.png "play")
+
+**Pause**
+
+![pause](/gallery/pause.png "pause")
+
+**Setting**
+
+![setting](/gallery/setting.png "setting")
