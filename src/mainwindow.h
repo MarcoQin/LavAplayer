@@ -50,6 +50,7 @@ public slots:
     void changeBtnToPause();
     void changeBtnToPlay();
     void onPlayStateChanged(Player::PlayState state);
+    void tryPlaySong();
 protected:
     void dragEnterEvent(QDragEnterEvent *e);
     void dropEvent(QDropEvent *e);

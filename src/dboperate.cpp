@@ -49,6 +49,21 @@ void setPlaying(const int listIndex, const int id)
     q.exec();
 }
 
+int getPlayingSong(const int listIndex)
+{
+    QSqlQuery q;
+    QString table_name = "list_" + QString::number(listIndex);
+    q.prepare("select id from " + table_name + " where is_playing = 1; ");
+    if (q.exec()) {
+        if (q.next()) {
+            return q.value(0).toInt();
+        }
+    } else {
+        qDebug() << q.lastError().text();
+        return 0;
+    }
+}
+
 QString getListName(const int listIndex)
 {
     return "list_" + QString::number(listIndex);

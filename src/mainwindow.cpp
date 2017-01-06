@@ -87,6 +87,10 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(this, SIGNAL(songStopped()), view, SLOT(onSongStopped()));
     connect(view, SIGNAL(onSongDoubleClicked(QSqlRecord)), this, SLOT(onDoubleClickSong(QSqlRecord)));
 
+    connect(ui->prevBtn, SIGNAL(clicked()), view, SLOT(playPrevious()));
+    connect(ui->nextBtn, SIGNAL(clicked()), view, SLOT(playNext()));
+
+
     setAcceptDrops(true);
 
     titleBar = new UI::TitleBar(this);
@@ -113,7 +117,7 @@ void MainWindow::connectSignals()
     connect(m_player, SIGNAL(positionChanged(int)), this, SLOT(onPosChanged(int)));
     connect(ui->pauseBtn, SIGNAL(clicked()), m_player, SLOT(pause()));
     connect(ui->stopBtn, SIGNAL(clicked()), m_player, SLOT(stop()));
-    connect(ui->playBtn, SIGNAL(clicked()), m_player, SLOT(play()));
+    connect(ui->playBtn, SIGNAL(clicked()), this, SLOT(tryPlaySong()));
     connect(m_player, SIGNAL(playStateChange(Player::PlayState)), this, SLOT(onPlayStateChanged(Player::PlayState)));
     connect(volumeDial, SIGNAL(valueChanged(int)), m_player, SLOT(setVolume(int)));
 }
@@ -262,5 +266,15 @@ void MainWindow::onPlayStateChanged(Player::PlayState state)
     }
     default:
         break;
+    }
+}
+
+void MainWindow::tryPlaySong()
+{
+    if (m_player->currentState() == Player::NoState) {
+        qDebug() << m_player->currentState();
+        static_cast<PlayListView *>(playListTabWidget->currentWidget())->tryStartPlay();
+    } else {
+        m_player->play();
     }
 }

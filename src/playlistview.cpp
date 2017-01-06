@@ -62,6 +62,9 @@ void PlayListView::setUpModel(const int listIndex)
     }
 
     this->setModel(model);
+    while(model->canFetchMore()) {
+        model->fetchMore();
+    }
 
     QList<QString> fieldToHide;
     fieldToHide << "path" << "bitrate" << "samplerate" << "length" << "genre" << "year" << "is_playing";
@@ -119,14 +122,38 @@ void PlayListView::rowDoubleClicked(const QModelIndex &index)
     emit onSongDoubleClicked(rowInfo);
 }
 
+void PlayListView::playNext()
+{
+    playNext(false);
+}
+
+void PlayListView::playPrevious()
+{
+    playNext(true);
+}
+
+void PlayListView::playNext(bool reverse)
+{
+    qDebug() << model->rowCount();
+    if (reverse) {
+        m_rowIndex = m_rowIndex > 0 ? --m_rowIndex : model->rowCount() - 1;
+    } else {
+        m_rowIndex = m_rowIndex >= model->rowCount() - 1 ? 0 : ++m_rowIndex;
+    }
+    playAtRowIndex(m_rowIndex);
+}
+
+void PlayListView::playAtRowIndex(int rowIndex)
+{
+    const QSqlRecord rowInfo = model->record(rowIndex);
+    emit onSongDoubleClicked(rowInfo);
+    QModelIndex index= model->index(rowIndex, 0,QModelIndex());
+    this->scrollTo(index);
+}
+
 void PlayListView::onSongAboutToStop()
 {
-    m_rowIndex++;
-    if (m_rowIndex >= model->rowCount()) {
-        m_rowIndex = 0;
-    }
-    const QSqlRecord rowInfo = model->record(m_rowIndex);
-    emit onSongDoubleClicked(rowInfo);
+    playNext();
 }
 
 void PlayListView::keyPressEvent(QKeyEvent *event)
@@ -148,4 +175,21 @@ void PlayListView::keyPressEvent(QKeyEvent *event)
             model->select();
         }
     }
+}
+
+void PlayListView::tryStartPlay()
+{
+    int id = getPlayingSong(m_listIndex);
+    qDebug() << id;
+    if (id != 0) {
+        int rowIndex = 0;
+        for (rowIndex; rowIndex < model->rowCount(); ++rowIndex) {
+            const QSqlRecord rowInfo = model->record(rowIndex);
+            if (rowInfo.value("id").toInt() == id) {
+                playAtRowIndex(rowIndex);
+                return;
+            }
+        }
+    }
+    playAtRowIndex(0);
 }

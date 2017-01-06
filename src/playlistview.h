@@ -35,7 +35,12 @@ public slots:
     void rowDoubleClicked(const QModelIndex &index);
     void keyPressEvent(QKeyEvent *event);
     void onSongAboutToStop();
+    void playNext(bool reverse);
+    void playNext();
+    void playPrevious();
+    void tryStartPlay();
 private:
+    void playAtRowIndex(int rowIndex);
     int m_rowIndex;
     QSqlRelationalTableModel *model;
     int m_listIndex;

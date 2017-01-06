@@ -23,4 +23,6 @@ void deleteSong(const int listIndex, const int id);
 
 void setPlaying(const int listIndex, const int id);
 
+int getPlayingSong(const int listIndex);
+
 #endif // DBOPERATE_H
