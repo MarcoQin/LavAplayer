@@ -39,6 +39,7 @@ public slots:
     void playNext();
     void playPrevious();
     void tryStartPlay();
+    void scrollToPlayingSong();
 private:
     void playAtRowIndex(int rowIndex);
     int m_rowIndex;

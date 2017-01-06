@@ -89,6 +89,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(ui->prevBtn, SIGNAL(clicked()), view, SLOT(playPrevious()));
     connect(ui->nextBtn, SIGNAL(clicked()), view, SLOT(playNext()));
+    connect(ui->noteBtn, SIGNAL(clicked()), view, SLOT(scrollToPlayingSong()));
 
 
     setAcceptDrops(true);
@@ -100,7 +101,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     m_settings = new Settings(this);
     connectSignals();
-    connect(ui->likeBtn, SIGNAL(clicked()), this, SLOT(showSettingDialog()));
+    connect(ui->settingsBtn, SIGNAL(clicked()), this, SLOT(showSettingDialog()));
 
 }
 

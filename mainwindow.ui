@@ -332,7 +332,7 @@ QPushButton#noteBtn:pressed {
      <string/>
     </property>
    </widget>
-   <widget class="QPushButton" name="stopAfterBtn">
+   <widget class="QPushButton" name="settingsBtn">
     <property name="geometry">
      <rect>
       <x>40</x>
@@ -354,15 +354,15 @@ QPushButton#noteBtn:pressed {
      </size>
     </property>
     <property name="styleSheet">
-     <string notr="true">QPushButton#stopAfterBtn {
+     <string notr="true">QPushButton#settingsBtn {
 
-	border-image: url(:/pic/images/controls/stopafter2.png);
+	border-image: url(:/pic/images/controls/option0.png);
 
 }
 
-QPushButton#stopAfterBtn:pressed {
+QPushButton#settingsBtn:pressed {
 
-	border-image: url(:/pic/images/controls/stopafter3.png);
+	border-image: url(:/pic/images/controls/option1.png);
 
 }
 </string>
@@ -1048,7 +1048,7 @@ QPushButton#pauseBtn:pressed {
    <zorder>right_spectum_color_mask</zorder>
    <zorder>button_box_bg</zorder>
    <zorder>noteBtn</zorder>
-   <zorder>stopAfterBtn</zorder>
+   <zorder>settingsBtn</zorder>
    <zorder>repeatBtn</zorder>
    <zorder>stopBtn</zorder>
    <zorder>prevBtn</zorder>

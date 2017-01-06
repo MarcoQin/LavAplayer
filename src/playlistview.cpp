@@ -193,3 +193,9 @@ void PlayListView::tryStartPlay()
     }
     playAtRowIndex(0);
 }
+
+void PlayListView::scrollToPlayingSong()
+{
+    QModelIndex index= model->index(m_rowIndex, 0,QModelIndex());
+    this->scrollTo(index);
+}
