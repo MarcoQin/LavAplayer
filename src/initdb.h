@@ -5,12 +5,19 @@
 #include <QString>
 #include <QtCore>
 #include <QDebug>
+#include <QDir>
 
 QSqlError initDb()
 {
     QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
-    QString runtimePath = QCoreApplication::applicationDirPath();
-    QString dbPath = runtimePath +  + "/../Resources/playlist";
+
+    QString homePath =  QDir::homePath();
+    QString lavaPath = homePath + "/.LavAplayer";
+    QDir dir(lavaPath);
+    if (!dir.exists()) {
+        QDir().mkdir(lavaPath);
+    }
+    QString dbPath = dir.filePath("playlist");
 
     qDebug() << dbPath;
 

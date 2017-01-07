@@ -3,6 +3,18 @@
 #include "LAVA/lava.h"
 #include <vector>
 #include <string>
+#include <QDebug>
+
+void WatchDog::run()
+{
+    while (true) {
+        if (LAVA::Core::instance()->is_stopping()) {
+            emit aboutToStop();
+        }
+        sleep(1);
+    }
+}
+
 
 class LavaCBK : public LAVA::AudioCallbackInject
 {
@@ -41,10 +53,22 @@ Player::Player(QObject *parent) : QObject(parent)
 {
     LavaCBK *cbk = new LavaCBK(this);
     LAVA::Core::instance()->setAudioCallbackInject(static_cast<LAVA::AudioCallbackInject*>(cbk));
-//    qRegisterMetaType<PlayState>("Player::PlayState");
-//    qRegisterMetaType<PlayState>("PlayState");
-//    qRegisterMetaType<Player::PlayState>("Player::PlayState");
-//    qRegisterMetaType<Player::PlayState>("PlayState");
+    watchDogThread = new WatchDog;
+    connect(watchDogThread, SIGNAL(aboutToStop()), this, SLOT(watchDogAboutToStop()));
+    watchDogThread->start();
+}
+
+Player::~Player()
+{
+    watchDogThread->quit();
+    watchDogThread->wait();
+}
+
+void Player::watchDogAboutToStop()
+{
+    m_state = Stopped;
+    emitStateSignal();
+    emit aboutToStop();
 }
 
 void Player::cbk(pcm_stereo_sample *input_buffer)
@@ -55,11 +79,6 @@ void Player::cbk(pcm_stereo_sample *input_buffer)
         emit positionChanged(cur_pos);
     }
     emit audioBufferReady(input_buffer);
-    if (LAVA::Core::instance()->is_stopping()) {
-        emit aboutToStop();
-        m_state = Stopped;
-        emitStateSignal();
-    }
 }
 
 void Player::play(QString &filename)

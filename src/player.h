@@ -6,6 +6,16 @@
 
 #include <QVector>
 #include <QString>
+#include <QThread>
+
+class WatchDog : public QThread
+{
+    Q_OBJECT
+    void run() Q_DECL_OVERRIDE;
+signals:
+    void aboutToStop();
+};
+
 
 class Player : public QObject
 {
@@ -19,6 +29,7 @@ public:
         Paused,
         Stopped
     };
+    ~Player();
     static Player *instance();
     Player::PlayState currentState();
     QVector<QString> getAudioDevices();
@@ -34,6 +45,7 @@ public slots:
 
     void cbk(pcm_stereo_sample *input_buffer);
 private:
+    WatchDog *watchDogThread;
     QString m_filename;
     PlayState m_state = NoState;
     static Player *_instance;
@@ -48,6 +60,7 @@ signals:
     void audioBufferReady(pcm_stereo_sample *input_buffer);
 
 public slots:
+    void watchDogAboutToStop();
 };
 Q_DECLARE_METATYPE(Player::PlayState)
 
