@@ -6,7 +6,8 @@
 
 QT       += core gui\
             widgets\
-            sql
+            sql \
+            concurrent
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 

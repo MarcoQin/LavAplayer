@@ -22,6 +22,8 @@
 
 #include "settings.h"
 
+#include "tagmanager.h"
+
 namespace Ui {
 class MainWindow;
 }
@@ -53,6 +55,7 @@ public slots:
     void changeBtnToPlay();
     void onPlayStateChanged(Player::PlayState state);
     void tryPlaySong();
+    void handleCover(QPixmap cover);
 protected:
     void dragEnterEvent(QDragEnterEvent *e);
     void dropEvent(QDropEvent *e);
@@ -60,6 +63,7 @@ protected:
 private:
 
     Player *m_player;
+    TagManager *m_tagManager;
     int m_last_position = 0;
     int m_length = 0;
     void connectSignals();

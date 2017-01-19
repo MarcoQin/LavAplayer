@@ -10,7 +10,6 @@
 #include <iostream>
 #include <QDebug>
 
-#include "tagmanager.h"
 #include <QFontDatabase>
 #include <QString>
 #include <QFont>
@@ -31,6 +30,8 @@
 #include "spectrograph.h"
 #include "spectrumanalyser.h"
 
+#include "qtconcurrentrun.h"
+
 
 void MainWindow::onAudioBufferReady(pcm_stereo_sample *input_buffer)
 {
@@ -46,6 +47,8 @@ MainWindow::MainWindow(QWidget *parent) :
     setWindowFlags(Qt::FramelessWindowHint);
     setMouseTracking(true);
 
+
+    m_tagManager = TagManager::instance();
 
     // initialize the database
     QSqlError err = initDb();
@@ -127,6 +130,8 @@ void MainWindow::connectSignals()
     connect(volumeDial, SIGNAL(valueChanged(int)), m_player, SLOT(setVolume(int)));
 
     connect(m_settings, SIGNAL(deviceChanged(QString)), m_player, SLOT(changeAudioDevice(QString)));
+
+    connect(m_tagManager, SIGNAL(gotCover(QPixmap)), this, SLOT(handleCover(QPixmap)));
 }
 
 MainWindow::~MainWindow()
@@ -152,6 +157,11 @@ void MainWindow::dropEvent(QDropEvent *e)
     emit onAddSong();
 }
 
+void tryToGetCover(TagManager *inst, QString path)
+{
+    inst->getCover(path.toStdString().c_str());
+}
+
 void MainWindow::onDoubleClickSong(const QSqlRecord &rowInfo)
 {
     QString path = rowInfo.value("path").toString();
@@ -165,7 +175,7 @@ void MainWindow::onDoubleClickSong(const QSqlRecord &rowInfo)
     ui->title->setText(title);
     ui->album->setText(rowInfo.value("album").toString());
     ui->artist->setText(rowInfo.value("artist").toString());
-    ui->cover->setPixmap(TagManager::instance()->getCover(path.toStdString().c_str()));
+    QtConcurrent::run(tryToGetCover, m_tagManager, path);  //  directly getting cover image will block UI thread
     ui->bit_rate->setText(QString::number(rowInfo.value("bitrate").toInt()) + " Kb/s");
     ui->sample_rate->setText(QString::number(rowInfo.value("samplerate").toInt()) + " Hz");
     std::string fmt = path.toStdString();
@@ -189,6 +199,11 @@ void MainWindow::onDoubleClickSong(const QSqlRecord &rowInfo)
     setPlaying(0, id);
     emit songStartPlay(id);
     emit songStartPlay();
+}
+
+void MainWindow::handleCover(QPixmap cover)
+{
+    ui->cover->setPixmap(cover);
 }
 
 void MainWindow::setMinimumWindow()

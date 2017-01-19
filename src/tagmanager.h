@@ -28,6 +28,7 @@ private:
     static TagManager *_instance;
 
 signals:
+    void gotCover(QPixmap cover);
 
 public slots:
 };

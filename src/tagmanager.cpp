@@ -39,11 +39,13 @@ QPixmap TagManager::getCover(const char *filename)
     TagLib::ID3v2::FrameList frameList = m_tag->frameList("APIC");
     if (frameList.isEmpty()) {
         QPixmap cover(":/pic/images/default.png");
+        emit gotCover(cover);
         return cover;
     } else {
         TagLib::ID3v2::AttachedPictureFrame *coverImg = static_cast<TagLib::ID3v2::AttachedPictureFrame *>(frameList.front());
         QPixmap cover;
         cover.loadFromData((const uchar *) coverImg->picture().data(), coverImg->picture().size());
+        emit gotCover(cover);
         return cover;
     }
 }
