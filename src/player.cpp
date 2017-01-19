@@ -135,6 +135,7 @@ void Player::seekTo(double pos)
 
 void Player::setVolume(int value)
 {
+    fprintf(stderr, "setVolume : %d\n", value);
     LAVA::Core::instance()->set_volume(value);
 }
 
